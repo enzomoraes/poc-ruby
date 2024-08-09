@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: notebook
+  description: Notebook i7 Dell
+  price: 390000
+  model: VOSTRO 5402
+  active: true
+
+two:
+  name: Iphone 13 128GB
+  description: Iphone 13 128 GB cor branca
+  price: 330000
+  model: 13 White
+  active: false
