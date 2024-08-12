@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :brands
   resources :products do
     member do
       patch 'activate'

@@ -1,53 +1,53 @@
 include Pagy::Backend
 
-class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show update destroy activate deactivate ]
+class BrandsController < ApplicationController
+  before_action :set_brand, only: %i[ show update destroy ]
   before_action :validate_active_param, only: %i[ index ]
 
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
-  # GET /products
+  # GET /brands
   def index
-    @pagy, @products = pagy(Product.includes(:brand).active(@active_status))
+    @pagy, @brands = pagy(Brand.active(@active_status))
 
-    render json: @products
+    render json: @brands
   end
 
-  # GET /products/1
+  # GET /brands/1
   def show
-    if @product.active
-      render json: @product
+    if @brand.active
+      render json: @brand
     else
       head :not_found
     end
   end
-
-  # POST /products
+  
+  # POST /brands
   def create
-    @product = Product.new(product_params)
+    @brand = Brand.new(brand_params)
 
-    if @product.save
-      render json: @product, status: :created, location: @product
+    if @brand.save
+      render json: @brand, status: :created, location: @brand
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render json: @brand.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /products/1
+  # PATCH/PUT /brands/1
   def update
-    if @product.update(product_params)
-      render json: @product
+    if @brand.update(brand_params)
+      render json: @brand
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render json: @brand.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /products/1
+  # DELETE /brands/1
   def destroy
-    @product.destroy!
+    @brand.destroy!
   end
 
-  # PATCH /products/1/activate
+  # PATCH /brands/1/activate
   def activate
     if @product.update(active: true)
       render json: @product
@@ -56,7 +56,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  # PATCH /products/1/deactivate
+  # PATCH /brands/1/deactivate
   def deactivate
     if @product.update(active: false)
       render json: @product
@@ -67,15 +67,15 @@ class ProductsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.includes(:brand).find(params[:id])
+    def set_brand
+      @brand = Brand.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
-    def product_params
-      params.require(:product).permit(:name, :description, :price, :model)
+    def brand_params
+      params.require(:brand).permit(:name, :description)
     end
-
+    
     def validate_active_param
       # Check if 'active' parameter is present and valid
       if params[:active].present? && %w(true false).include?(params[:active])

@@ -1,6 +1,6 @@
-class Product < ApplicationRecord
+class Brand < ApplicationRecord
   scope :active, -> (status) { where(active: status) }
 
-  belongs_to :brand
+  has_many :products
 
 end
