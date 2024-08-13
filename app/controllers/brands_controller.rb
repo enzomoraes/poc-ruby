@@ -1,7 +1,7 @@
 include Pagy::Backend
 
 class BrandsController < ApplicationController
-  before_action :set_brand, only: %i[ show update destroy ]
+  before_action :set_brand, only: %i[ show update destroy activate deactivate ]
   before_action :validate_active_param, only: %i[ index ]
 
   after_action { pagy_headers_merge(@pagy) if @pagy }
@@ -49,19 +49,19 @@ class BrandsController < ApplicationController
 
   # PATCH /brands/1/activate
   def activate
-    if @product.update(active: true)
-      render json: @product
+    if @brand.update(active: true)
+      render json: @brand
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render json: @brand.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH /brands/1/deactivate
   def deactivate
-    if @product.update(active: false)
-      render json: @product
+    if @brand.update(active: false)
+      render json: @brand
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render json: @brand.errors, status: :unprocessable_entity
     end
   end
 

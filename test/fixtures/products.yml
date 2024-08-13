@@ -1,15 +1,31 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: notebook
-  description: Notebook i7 Dell
-  price: 390000
-  model: VOSTRO 5402
+  name: "RTX 3090"
+  description: "High-end GPU by Nvidia"
+  price: 149900
+  model: "3090"
   active: true
+  brand: one
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 two:
-  name: Iphone 13 128GB
-  description: Iphone 13 128 GB cor branca
-  price: 330000
-  model: 13 White
+  name: "Intel Core i9-13900K"
+  description: "High-performance CPU by Intel"
+  price: 59900
+  model: "i9-13900K"
   active: false
+  brand: two
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+three:
+  name: "AMD Ryzen 9 5950X"
+  description: "High-performance CPU by AMD"
+  price: 79900
+  model: "5950X"
+  active: true
+  brand: one
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

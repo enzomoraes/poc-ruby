@@ -1,11 +1,23 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# test/fixtures/brands.yml
 one:
-  name: MyString
-  description: MyString
-  active: false
+  name: Nvidia
+  description: "Leading manufacturer of GPUs"
+  active: true
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 two:
-  name: MyString
-  description: MyString
+  name: Intel
+  description: "Leading manufacturer of CPUs"
   active: false
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+three:
+  name: AMD
+  description: "Manufacturer of CPUs and GPUs"
+  active: true
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
