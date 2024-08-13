@@ -51,3 +51,9 @@ end
 
 
 gem "pagy", "~> 9.0"
+
+gem "omniauth-google-oauth2", "~> 1.1"
+
+gem "jwt", "~> 2.8"
+
+gem 'dotenv-rails', groups: [:development, :test]

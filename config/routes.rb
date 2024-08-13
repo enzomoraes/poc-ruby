@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :users
   resources :brands do
     member do
       patch 'activate'
@@ -11,6 +12,11 @@ Rails.application.routes.draw do
       patch 'deactivate'
     end
   end
+
+  get '/auth/:provider/callback', to: 'sessions#google_callback'
+  get '/auth/google/url', to: 'sessions#google_auth_redirect'
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

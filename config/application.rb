@@ -28,5 +28,21 @@ module PocRuby
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+
+    config.session_store :cookie_store, key: '_your_app_session'
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+
+    # Configuração para OmniAuth
+    config.middleware.use OmniAuth::Builder do
+      provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {
+        scope: 'userinfo.email,userinfo.profile',
+        prompt: 'select_account',
+        access_type: 'offline',
+        callback_path: '/auth/google/callback',
+        :provider_ignores_state => true
+      }
+    end
   end
 end
