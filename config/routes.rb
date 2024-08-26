@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :cart_items, only: [:index, :create]
+  delete 'cart_items', to: 'cart_items#destroy'
   resources :users
   resources :brands do
     member do

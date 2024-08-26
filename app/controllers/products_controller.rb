@@ -1,6 +1,7 @@
 include Pagy::Backend
 
 class ProductsController < ApplicationController
+  include DomainExceptions
   before_action :set_product, only: %i[ show update destroy activate deactivate ]
   before_action :validate_active_param, only: %i[ index ]
 
@@ -44,7 +45,14 @@ class ProductsController < ApplicationController
 
   # DELETE /products/1
   def destroy
-    @product.destroy!
+    if @product.cart_items.exists?
+      raise ProductDeletionError
+    else
+      @product.destroy!
+      head :no_content
+    end
+  rescue ProductDeletionError => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   # PATCH /products/1/activate

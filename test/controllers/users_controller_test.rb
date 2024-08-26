@@ -31,9 +31,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should destroy user" do
+  test "should destroy user and associated cart_items" do
+
     assert_difference("User.count", -1) do
-      delete user_url(@user), as: :json
+      assert_difference("CartItem.count", -1) do
+        delete user_url(@user), as: :json
+      end
     end
 
     assert_response :no_content

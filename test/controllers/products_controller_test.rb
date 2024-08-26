@@ -1,6 +1,7 @@
 require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
+  include DomainExceptions
   setup do
     @product = products(:one)
   end
@@ -52,9 +53,22 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should destroy product" do
-    assert_difference("Product.count", -1) do
+  test "should not destroy product when referenced by cart item" do    
+    assert_no_difference("Product.count") do
       delete product_url(@product), as: :json
+    end
+
+    assert_response :unprocessable_entity
+    json_response = JSON.parse(@response.body)
+    assert_equal ProductDeletionError.new.message, json_response['error']
+  end
+
+  test "should destroy product when not referenced" do
+    # Create a new product without any cart items
+    new_product = Product.create!(name: "Test Product", description: "Test Description", price: 10.0, model: "Test Model", brand: @product.brand)
+    
+    assert_difference("Product.count", -1) do
+      delete product_url(new_product), as: :json
     end
 
     assert_response :no_content
