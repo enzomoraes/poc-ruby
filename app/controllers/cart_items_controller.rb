@@ -6,8 +6,7 @@ class CartItemsController < ApplicationController
   # GET /cart_items
   def index
     if @user
-      @cart_items = CartItem.where(user_id: @user.id)
-      aggregated_items = aggregate_cart_items(@cart_items)
+      aggregated_items = CartItem.aggregate_for_user(@user.id)
       render json: aggregated_items
     else
       render json: { error: "User with id #{params[:user_id]} not found" }, status: :not_found
@@ -66,12 +65,4 @@ class CartItemsController < ApplicationController
       @user = User.find_by(id: params[:user_id])
     end
 
-    def aggregate_cart_items(cart_items)
-      cart_items.group_by(&:product_id).map do |product_id, items|
-        {
-          quantity: items.sum(&:quantity),
-          product: items.first.product
-        }
-      end
-    end
 end

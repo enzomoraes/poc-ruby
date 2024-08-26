@@ -11,9 +11,25 @@ class CartItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     
     json_response = JSON.parse(@response.body)
-    assert_instance_of Array, json_response
-    assert_equal CartItem.where(user_id: @user.id).group(:product_id).count.keys.size, json_response.size
-    # Add more specific assertions about the structure of aggregated items
+    assert_instance_of Hash, json_response
+    assert_includes json_response, "items"
+    assert_includes json_response, "total_cart"
+    
+    assert_instance_of Array, json_response["items"]
+    assert_equal CartItem.where(user_id: @user.id).group(:product_id).count.keys.size, json_response["items"].size
+    
+    # Verificar a estrutura de um item agregado
+    item = json_response["items"].first
+    assert_includes item, "quantity"
+    assert_includes item, "product"
+    assert_includes item, "total"
+    
+    # Verificar se o total do carrinho está presente e é um número
+    assert_instance_of Integer, json_response["total_cart"]
+    
+    # Verificar se o total do carrinho é igual à soma dos totais dos itens
+    calculated_total = json_response["items"].sum { |item| item["total"] }
+    assert_equal calculated_total, json_response["total_cart"]
   end
 
   test "should not get index without user_id" do
